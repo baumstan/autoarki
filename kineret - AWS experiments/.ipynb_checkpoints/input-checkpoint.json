@@ -1,0 +1,6 @@
+{
+    "s3_bucket":"label-test3",
+    "job_id":"bounding_box",
+    "ground_truth_job_name":"test12",
+    "yolo_output_dir":"test12"
+}
