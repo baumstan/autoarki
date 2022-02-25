@@ -1,0 +1,7 @@
+train: custom_dataset/train
+val: custom_dataset/val
+
+# Classes
+nc: 1  # number of classes
+
+names: ['overlapping_text']  # class names
