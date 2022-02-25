@@ -1,5 +1,5 @@
-train: custom_dataset/train
-val: custom_dataset/val
+train: s3://autoarki-ground-truth-labeling/training_data/
+val: s3://autoarki-ground-truth-labeling/test_data/
 
 # Classes
 nc: 1  # number of classes
