@@ -74,46 +74,48 @@ def parse_gt_output(manifest_path, job_name):
 
 
 
-def save_df_to_s3(df_local, s3_bucket, destination):
-    """
-    Saves a pandas dataframe to S3
+# def save_df_to_s3(df_local, s3_bucket, destination):
+#     """
+#     Saves a pandas dataframe to S3
 
-    Input:
-    df_local: Dataframe to save
-    s3_bucket: Bucket name
-    destination: Prefix
-    """
+#     Input:
+#     df_local: Dataframe to save
+#     s3_bucket: Bucket name
+#     destination: Prefix
+#     """
 
-    csv_buffer = StringIO()
-    s3_resource = boto3.resource("s3")
+#     csv_buffer = StringIO()
+#     s3_resource = boto3.resource("s3")
 
-    df_local.to_csv(csv_buffer, index=False)
-    s3_resource.Object(s3_bucket, destination).put(Body=csv_buffer.getvalue())
-
-
-def main():
-    """
-    Performs the following tasks:
-    1. Reads input from 'input.json'
-    2. Parses the Ground Truth annotations and creates a dataframe
-    3. Saves the dataframe to S3
-    """
-
-    with open("input.json") as fjson:
-        input_dict = json.load(fjson)
-
-    s3_bucket = input_dict["s3_bucket"]
-   # job_id = input_dict["job_id"]
-    gt_job_name = input_dict["ground_truth_job_name"]
-
-    mani_path = f"s3://{s3_bucket}/{gt_job_name}/manifests/output/output.manifest"
-#    mani_path = f"s3://{s3_bucket}/{job_id}/{gt_job_name}/manifests/output/output.manifest"
-
-    df_annot = parse_gt_output(mani_path, gt_job_name)
-    dest = f"{gt_job_name}/annot.csv"
-#    dest = f"{job_id}/{gt_job_name}/annot.csv"
-    save_df_to_s3(df_annot, s3_bucket, dest)
+#     df_local.to_csv(csv_buffer, index=False)
+#     s3_resource.Object(s3_bucket, destination).put(Body=csv_buffer.getvalue())
 
 
-if __name__ == "__main__":
-    main()
+# def main():
+#     """
+#     Performs the following tasks:
+#     1. Reads input from 'input.json'
+#     2. Parses the Ground Truth annotations and creates a dataframe
+#     3. Saves the dataframe to S3
+#     """
+
+#     with open("input.json") as fjson:
+#         input_dict = json.load(fjson)
+
+#     s3_bucket = input_dict["s3_bucket"]
+#    # job_id = input_dict["job_id"]
+#     gt_job_name = input_dict["ground_truth_job_name"]
+    
+#     mani_path = f"{mani_path}" #s3://autoarki-ground-truth-labeling/bounding_box/ground_truth_annots/yolo-bbox-train/manifests/output.manifest"
+#     job_name = job_name
+
+# #    mani_path = f"s3://{s3_bucket}/{job_id}/{gt_job_name}/manifests/output/output.manifest"
+
+#     df_annot = parse_gt_output(mani_path, job_name)
+#     dest = f"{job_name}/annot.csv"
+# #    dest = f"{job_id}/{gt_job_name}/annot.csv"
+#     save_df_to_s3(df_annot, s3_bucket, dest)
+
+
+# if __name__ == "__main__":
+#     main()
