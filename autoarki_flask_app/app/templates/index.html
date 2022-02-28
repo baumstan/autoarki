@@ -2,13 +2,4 @@
 
 {% block content %}
     <p>AutoArki information goes here</p>
-    {% for image in images %}
-    <div>
-        <p>
-          {{ image.title }} - pg {{ image.page_num}}
-            <br>
-          {{ image.output }}
-        </p>
-    </div>
-    {% endfor %}
 {% endblock %}

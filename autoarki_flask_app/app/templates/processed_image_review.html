@@ -3,12 +3,12 @@
 {% block content %}
     <h1>Results below!</h1>
     {% for image in images %}
-    <div>
-        <p>
-          {{ image.title }} - pg {{ image.page_num}}
-            <br>
-          {{ image.output }}
-        </p>
-    </div>
+        {% include '_page.html' %}
     {% endfor %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Previous page</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Next page</a>
+    {% endif %}
 {% endblock %}
