@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.firstname }}!</h1>
+    <div>
+      <form action="" method="post">
+         {{ form.hidden_tag() }}
+         <p>
+             {{ form.plan.label }}<br>
+             {{ form.plan(cols=32, rows=4) }}<br>
+             {% for error in form.plan.errors %}
+             <span style="color: red;">[{{ error }}]</span>
+             {% endfor %}
+         </p>
+         <p>{{ form.submit() }}</p>
+       </form>
+        <p>
+          <a href="{{ url_for('processed_image_review') }}">Click here</a>
+          to check your plan!
+        </p>
+    </div>
+{% endblock %}
