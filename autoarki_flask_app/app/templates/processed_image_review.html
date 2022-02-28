@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Results below!</h1>
+    {% for image in images %}
+        {% include '_page.html' %}
+    {% endfor %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Previous page</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Next page</a>
+    {% endif %}
+{% endblock %}
