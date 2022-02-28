@@ -1,9 +1,17 @@
 from flask import render_template, flash, redirect,  url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm,EditAccountForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
+from datetime import datetime
+
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 @app.route('/')
 
@@ -58,7 +66,7 @@ def doc_checker():
     return render_template('doc_checker.html', title='Document Checker')
 
 
-@app.route('/processed_image_review')
+@app.route('/dock_checker/processed_image_review')
 @login_required
 def processed_image_review():
     images = [
@@ -74,3 +82,39 @@ def processed_image_review():
         }
     ]
     return render_template('processed_image_review.html', title='Processed Image', images=images)
+
+
+@app.route('/account/<email>')
+@login_required
+def account(email):
+    user = User.query.filter_by(email=email).first_or_404()
+    images = [
+        {
+            'title': 'test_title',
+            'page_num': '1',
+            'output': 'test_output1',
+            'timestamp': 'sometime'
+        },
+        {
+            'title': 'test_title',
+            'page_num': '2',
+            'output': 'test_output2',
+            'timestamp': 'sometime'
+        }
+    ]
+    return render_template('account.html', user=user, images=images)
+
+
+@app.route('/account_settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    form = EditAccountForm(current_user.email)
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('account_settings'))
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+    return render_template('account_settings.html', title='Account Settings',
+                           form=form)

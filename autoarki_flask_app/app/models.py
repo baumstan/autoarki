@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     creation_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
     image_uploads = db.relationship('ImageUpload', backref='upload_user', lazy='dynamic')
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '<User {}>'.format(self.email)

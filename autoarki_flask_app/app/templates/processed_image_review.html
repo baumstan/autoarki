@@ -3,12 +3,6 @@
 {% block content %}
     <h1>Results below!</h1>
     {% for image in images %}
-    <div>
-        <p>
-          {{ image.title }} - pg {{ image.page_num}}
-            <br>
-          {{ image.output }}
-        </p>
-    </div>
+        {% include '_page.html' %}
     {% endfor %}
 {% endblock %}
