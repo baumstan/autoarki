@@ -1,0 +1,11 @@
+names:
+- '-'
+- Column_Wall_Intersection
+- cmu_hinge_clearance
+- floating_door
+- illegibletext
+- missing_wall
+- no_stair_direction
+nc: 7
+train: autoarki-5/train/images
+val: autoarki-5/valid/images
