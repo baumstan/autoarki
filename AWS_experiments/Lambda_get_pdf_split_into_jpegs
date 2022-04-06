@@ -1,0 +1,75 @@
+'''
+This AWS lambda Python script is triggered by a pdf file created in one S3 bucket.
+The file is then ingested. Each page of the pdf is saved out as a separate file.
+Each file is converted to a JPEG and saved to a second S3 bucket.
+
+For example a two page pdf would be saved:
+s3:://raw_doc/sample_doc.pdf > 
+s3::/processed_doc/sample_doc-1.jpeg
+s3::/processed_doc/sample_doc-2.jpeg
+Runtime: Pyton 3.8
+'''
+
+
+import json
+import urllib.parse
+import boto3
+from io import BytesIO
+
+from pdf2image import (
+ convert_from_bytes,
+ convert_from_path
+ )
+
+from pdf2image.exceptions import (
+ PDFInfoNotInstalledError,
+ PDFPageCountError,
+ PDFSyntaxError
+)
+from PIL.Image import core as _imaging
+import sys
+sys.modules['PIL._imaging'] = _imaging
+
+from PIL import Image as im
+print('Loading function')
+s3 = boto3.client('s3')
+s3_resource = boto3.resource('s3')
+
+destination_bucket_name = 'autoarki-preprocessed-images'
+
+def lambda_handler(event, context):
+
+    # Get the object from the event and show its content type
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key=event['Records'][0]['s3']['object']['key']
+
+    # Return pdf in bytes
+    obj = s3_resource.Object(bucket,key)
+    fs = obj.get()['Body'].read()
+    
+    # Get name of file to add to jpeg keys
+    path_name = 's3://{}/{}'.format(bucket, key)
+    dir_name = str.replace(key,".pdf"," ")
+    images = convert_from_bytes(fs, fmt='jpeg')
+    
+    # Convert a multi-page PDF to a directory of images
+    for i, image in enumerate(images):
+     fname = dir_name+'/'+str(i)+'.jpeg'
+     
+    # Convert back to bytes format and save to destination bucket
+     byte_io = BytesIO()
+     image.save(byte_io, format='JPEG')
+     byte_io.seek(0)
+     s3.put_object(
+          Bucket=destination_bucket_name,
+          Key=str(fname),
+          Body=byte_io,
+          ContentType='image/jpeg',
+      )
+
+        
+    return {
+        'statusCode': 3000,
+        'body': json.dumps('File has been Successfully Copied')
+    }
+
