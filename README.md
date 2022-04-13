@@ -6,4 +6,5 @@ Berkeley Masters in Data Science Capstone project for David Ristau, Emily Brantn
 
 ## Contact 
 Emily Brantner - Embrantner@gmail.com </br>
+David Ristau - Dfristau@gmail.com </br>
 Kineret Stanley - kineret.stanley@gmail.com
