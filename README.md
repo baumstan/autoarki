@@ -2,7 +2,7 @@
 
 Berkeley Masters in Data Science Capstone project for David Ristau, Emily Brantner, Kineret Stanley
 
-[Demo] https://drive.google.com/file/d/1UfKSJCpnGOiHgLICKu_tWvKRjASKoCuC/view?usp=sharing
+[Demo](https://drive.google.com/file/d/1UfKSJCpnGOiHgLICKu_tWvKRjASKoCuC/view?usp=sharing)
 
 DEPRECATED: [Autoarki website](https://flask-autoarki.herokuapp.com/)
 
